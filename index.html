@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birth Certificate Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #218838;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="birthForm">
+    <h2>Birth Certificate Form / जन्म प्रमाण पत्र फॉर्म</h2>
+
+    <label>Name (English) / नाम (अंग्रेज़ी):</label>
+    <input type="text" name="name_en" required>
+
+    <label>नाम (हिंदी):</label>
+    <input type="text" name="name_hi" required>
+
+    <label>Aadhar No / आधार संख्या:</label>
+    <input type="text" name="aadhaar" required>
+
+    <label>Date of Birth / जन्म तिथि:</label>
+    <input type="date" name="dob" required>
+
+    <label>Gender / लिंग:</label>
+    <select name="gender" required>
+      <option value="">--Select / चयन करें--</option>
+      <option value="Male">Male / पुरुष</option>
+      <option value="Female">Female / महिला</option>
+      <option value="Other">Other / अन्य</option>
+    </select>
+
+    <label>Father's Name (English) / पिता का नाम (अंग्रेज़ी):</label>
+    <input type="text" name="father_name_en" required>
+
+    <label>पिता का नाम (हिंदी):</label>
+    <input type="text" name="father_name_hi" required>
+
+    <label>Father's Aadhar No / पिता का आधार संख्या:</label>
+    <input type="text" name="father_aadhaar" required>
+
+    <label>Mother's Name (English) / माता का नाम (अंग्रेज़ी):</label>
+    <input type="text" name="mother_name_en" required>
+
+    <label>माता का नाम (हिंदी):</label>
+    <input type="text" name="mother_name_hi" required>
+
+    <label>Mother's Aadhar No / माता का आधार संख्या:</label>
+    <input type="text" name="mother_aadhaar" required>
+
+    <label>Mobile No / मोबाइल नंबर:</label>
+    <input type="tel" name="mobile" required>
+
+    <label>Full Address (English) / पूरा पता (अंग्रेज़ी):</label>
+    <textarea name="address_en" rows="3" required></textarea>
+
+    <label>पूरा पता (हिंदी):</label>
+    <textarea name="address_hi" rows="3" required></textarea>
+
+    <div class="button-group">
+      <button type="submit">Submit & Download PDF / आवेदन जमा करें और PDF डाउनलोड करें</button>
+      <button type="button" onclick="window.print()">🖨️ Print Form / प्रिंट करें</button>
+    </div>
+  </form>
+
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    document.getElementById("birthForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const doc = new jsPDF();
+
+      let y = 10;
+      const lineHeight = 10;
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(12);
+      doc.text("Birth Certificate Application / जन्म प्रमाण पत्र आवेदन", 10, y);
+      y += lineHeight;
+
+      const fields = [
+        ["Name (English):", form.name_en.value],
+        ["नाम (हिंदी):", form.name_hi.value],
+        ["Aadhar No:", form.aadhaar.value],
+        ["Date of Birth:", form.dob.value],
+        ["Gender:", form.gender.value],
+        ["Father's Name (English):", form.father_name_en.value],
+        ["पिता का नाम (हिंदी):", form.father_name_hi.value],
+        ["Father's Aadhar No:", form.father_aadhaar.value],
+        ["Mother's Name (English):", form.mother_name_en.value],
+        ["माता का नाम (हिंदी):", form.mother_name_hi.value],
+        ["Mother's Aadhar No:", form.mother_aadhaar.value],
+        ["Mobile No:", form.mobile.value],
+        ["Full Address (English):", form.address_en.value],
+        ["पूरा पता (हिंदी):", form.address_hi.value]
+      ];
+
+      fields.forEach(([label, value]) => {
+        if (y > 270) {
+          doc.addPage();
+          y = 10;
+        }
+        doc.text(`${label} ${value}`, 10, y);
+        y += lineHeight;
+      });
+
+      doc.save("Birth_Certificate_Form.pdf");
+    });
+  </script>
+
+</body>
+</html>
