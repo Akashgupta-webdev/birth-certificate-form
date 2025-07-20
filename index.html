@@ -258,8 +258,8 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="required">Aadhar No / आधार संख्या:</label>
-                        <input type="text" name="aadhaar" required pattern="[0-9]{12}" title="12-digit Aadhar number">
+                        <label>Aadhar No / आधार संख्या:</label>
+                        <input type="text" name="aadhaar" pattern="[0-9]{12}" title="12-digit Aadhar number">
                     </div>
                     <div class="form-group">
                         <label class="required">Date of Birth / जन्म तिथि:</label>
@@ -292,8 +292,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required">Aadhar No / आधार संख्या:</label>
-                    <input type="text" name="father_aadhaar" required pattern="[0-9]{12}"
+                    <label>Aadhar No / आधार संख्या:</label>
+                    <input type="text" name="father_aadhaar" pattern="[0-9]{12}"
                         title="12-digit Aadhar number">
                 </div>
             </div>
@@ -313,8 +313,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required">Aadhar No / आधार संख्या:</label>
-                    <input type="text" name="mother_aadhaar" required pattern="[0-9]{12}"
+                    <label>Aadhar No / आधार संख्या:</label>
+                    <input type="text" name="mother_aadhaar" pattern="[0-9]{12}"
                         title="12-digit Aadhar number">
                 </div>
             </div>
@@ -324,8 +324,8 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="required">Mobile No / मोबाइल नंबर:</label>
-                        <input type="tel" name="mobile" required pattern="[0-9]{10}" title="10-digit mobile number">
+                        <label>Mobile No / मोबाइल नंबर:</label>
+                        <input type="tel" name="mobile" pattern="[0-9]{10}" title="10-digit mobile number">
                     </div>
                 </div>
 
@@ -341,14 +341,14 @@
             </div>
 
             <div class="button-group">
-                <button type="submit">Submit & Download PDF / आवेदन जमा करें और PDF डाउनलोड करें</button>
+                <button type="submit">Submit / आवेदन जमा करें</button>
                 <button type="button" onclick="printSummary()"><span>🖨️</span> Print Form / प्रिंट करें</button>
             </div>
         </form>
     </div>
 
     <script>
-        const { jsPDF } = window.jspdf;
+        // const { jsPDF } = window.jspdf;
 
         function printSummary() {
             // Make sure summary box is visible
@@ -415,25 +415,25 @@
             summaryBox.scrollIntoView({ behavior: 'smooth' });
 
             // Generate PDF
-            const doc = new jsPDF();
-            let y = 10;
-            const lineHeight = 10;
+            // const doc = new jsPDF();
+            // let y = 10;
+            // const lineHeight = 10;
 
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-            doc.text("Birth Certificate Application / जन्म प्रमाण पत्र आवेदन", 10, y);
-            y += lineHeight * 2;
+            // doc.setFont("helvetica", "normal");
+            // doc.setFontSize(12);
+            // doc.text("Birth Certificate Application / जन्म प्रमाण पत्र आवेदन", 10, y);
+            // y += lineHeight * 2;
 
-            summaryData.forEach((item) => {
-                if (y > 270) {
-                    doc.addPage();
-                    y = 10;
-                }
-                doc.text(`${item.label} ${item.value}`, 10, y);
-                y += lineHeight;
-            });
+            // summaryData.forEach((item) => {
+            //     if (y > 270) {
+            //         doc.addPage();
+            //         y = 10;
+            //     }
+            //     doc.text(`${item.label} ${item.value}`, 10, y);
+            //     y += lineHeight;
+            // });
 
-            doc.save("Birth_Certificate_Form.pdf");
+            // doc.save("Birth_Certificate_Form.pdf");
         });
     </script>
 </body>
