@@ -1,163 +1,441 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Birth Certificate Form</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      padding: 20px;
-    }
-    form {
-      background: #fff;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-    }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      margin-top: 20px;
-      width: 100%;
-      padding: 10px;
-      background: #28a745;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #218838;
-    }
-    .button-group {
-      display: flex;
-      gap: 10px;
-      flex-direction: column;
-    }
-  </style>
-</head>
-<body>
-
-  <form id="birthForm">
-    <h2>Birth Certificate Form / जन्म प्रमाण पत्र फॉर्म</h2>
-
-    <label>Name (English) / नाम (अंग्रेज़ी):</label>
-    <input type="text" name="name_en" required>
-
-    <label>नाम (हिंदी):</label>
-    <input type="text" name="name_hi" required>
-
-    <label>Aadhar No / आधार संख्या:</label>
-    <input type="text" name="aadhaar" required>
-
-    <label>Date of Birth / जन्म तिथि:</label>
-    <input type="date" name="dob" required>
-
-    <label>Gender / लिंग:</label>
-    <select name="gender" required>
-      <option value="">--Select / चयन करें--</option>
-      <option value="Male">Male / पुरुष</option>
-      <option value="Female">Female / महिला</option>
-      <option value="Other">Other / अन्य</option>
-    </select>
-
-    <label>Father's Name (English) / पिता का नाम (अंग्रेज़ी):</label>
-    <input type="text" name="father_name_en" required>
-
-    <label>पिता का नाम (हिंदी):</label>
-    <input type="text" name="father_name_hi" required>
-
-    <label>Father's Aadhar No / पिता का आधार संख्या:</label>
-    <input type="text" name="father_aadhaar" required>
-
-    <label>Mother's Name (English) / माता का नाम (अंग्रेज़ी):</label>
-    <input type="text" name="mother_name_en" required>
-
-    <label>माता का नाम (हिंदी):</label>
-    <input type="text" name="mother_name_hi" required>
-
-    <label>Mother's Aadhar No / माता का आधार संख्या:</label>
-    <input type="text" name="mother_aadhaar" required>
-
-    <label>Mobile No / मोबाइल नंबर:</label>
-    <input type="tel" name="mobile" required>
-
-    <label>Full Address (English) / पूरा पता (अंग्रेज़ी):</label>
-    <textarea name="address_en" rows="3" required></textarea>
-
-    <label>पूरा पता (हिंदी):</label>
-    <textarea name="address_hi" rows="3" required></textarea>
-
-    <div class="button-group">
-      <button type="submit">Submit & Download PDF / आवेदन जमा करें और PDF डाउनलोड करें</button>
-      <button type="button" onclick="window.print()">🖨️ Print Form / प्रिंट करें</button>
-    </div>
-  </form>
-
-  <script>
-    const { jsPDF } = window.jspdf;
-
-    document.getElementById("birthForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const form = e.target;
-      const doc = new jsPDF();
-
-      let y = 10;
-      const lineHeight = 10;
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(12);
-      doc.text("Birth Certificate Application / जन्म प्रमाण पत्र आवेदन", 10, y);
-      y += lineHeight;
-
-      const fields = [
-        ["Name (English):", form.name_en.value],
-        ["नाम (हिंदी):", form.name_hi.value],
-        ["Aadhar No:", form.aadhaar.value],
-        ["Date of Birth:", form.dob.value],
-        ["Gender:", form.gender.value],
-        ["Father's Name (English):", form.father_name_en.value],
-        ["पिता का नाम (हिंदी):", form.father_name_hi.value],
-        ["Father's Aadhar No:", form.father_aadhaar.value],
-        ["Mother's Name (English):", form.mother_name_en.value],
-        ["माता का नाम (हिंदी):", form.mother_name_hi.value],
-        ["Mother's Aadhar No:", form.mother_aadhaar.value],
-        ["Mobile No:", form.mobile.value],
-        ["Full Address (English):", form.address_en.value],
-        ["पूरा पता (हिंदी):", form.address_hi.value]
-      ];
-
-      fields.forEach(([label, value]) => {
-        if (y > 270) {
-          doc.addPage();
-          y = 10;
+    <meta charset="UTF-8">
+    <title>Birth Certificate Form</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
         }
-        doc.text(`${label} ${value}`, 10, y);
-        y += lineHeight;
-      });
 
-      doc.save("Birth_Certificate_Form.pdf");
-    });
-  </script>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #summaryBox {
+            display: none;
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        #summaryBox h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px 20px;
+        }
+
+        .summary-label {
+            font-weight: bold;
+            color: var(--dark-color);
+            text-align: right;
+        }
+
+        .summary-value {
+            color: #555;
+        }
+
+        form {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .form-section h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+        }
+
+        .hindi-label {
+            color: #1e3799;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button[type="submit"] {
+            background: var(--success-color);
+            color: white;
+        }
+
+        button[type="submit"]:hover {
+            background: #219653;
+        }
+
+        button[type="button"] {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        button[type="button"]:hover {
+            background: var(--secondary-color);
+        }
+
+        .required::after {
+            content: '*';
+            color: var(--accent-color);
+            margin-left: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+                gap: 5px;
+            }
+
+            .summary-label {
+                text-align: left;
+            }
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #summaryBox,
+            #summaryBox * {
+                visibility: visible;
+            }
+
+            #summaryBox {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 20px;
+                box-shadow: none;
+            }
+
+            .button-group {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="summaryBox">
+            <h3>Application Summary / आवेदन सारांश</h3>
+            <div class="summary-grid" id="summaryContent">
+                <!-- Summary content will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <form id="birthForm">
+            <h2>Birth Certificate Form / जन्म प्रमाण पत्र फॉर्म</h2>
+
+            <div class="form-section">
+                <h4>Child Details / बच्चे का विवरण</h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Name (English) / नाम (अंग्रेज़ी):</label>
+                        <input type="text" name="name_en" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">नाम (हिंदी):</label>
+                        <input type="text" name="name_hi" required class="hindi-input">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Aadhar No / आधार संख्या:</label>
+                        <input type="text" name="aadhaar" required pattern="[0-9]{12}" title="12-digit Aadhar number">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Date of Birth / जन्म तिथि:</label>
+                        <input type="date" name="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Gender / लिंग:</label>
+                        <select name="gender" required>
+                            <option value="">--Select / चयन करें--</option>
+                            <option value="Male">Male / पुरुष</option>
+                            <option value="Female">Female / महिला</option>
+                            <option value="Other">Other / अन्य</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Father's Details / पिता का विवरण</h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Name (English) / नाम (अंग्रेज़ी):</label>
+                        <input type="text" name="father_name_en" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">नाम (हिंदी):</label>
+                        <input type="text" name="father_name_hi" required class="hindi-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Aadhar No / आधार संख्या:</label>
+                    <input type="text" name="father_aadhaar" required pattern="[0-9]{12}"
+                        title="12-digit Aadhar number">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Mother's Details / माता का विवरण</h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Name (English) / नाम (अंग्रेज़ी):</label>
+                        <input type="text" name="mother_name_en" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">नाम (हिंदी):</label>
+                        <input type="text" name="mother_name_hi" required class="hindi-input">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Aadhar No / आधार संख्या:</label>
+                    <input type="text" name="mother_aadhaar" required pattern="[0-9]{12}"
+                        title="12-digit Aadhar number">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Contact Information / संपर्क जानकारी</h4>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="required">Mobile No / मोबाइल नंबर:</label>
+                        <input type="tel" name="mobile" required pattern="[0-9]{10}" title="10-digit mobile number">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">Full Address (English) / पूरा पता (अंग्रेज़ी):</label>
+                    <textarea name="address_en" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="required">पूरा पता (हिंदी):</label>
+                    <textarea name="address_hi" rows="3" required class="hindi-input"></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit">Submit & Download PDF / आवेदन जमा करें और PDF डाउनलोड करें</button>
+                <button type="button" onclick="printSummary()"><span>🖨️</span> Print Form / प्रिंट करें</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        function printSummary() {
+            // Make sure summary box is visible
+            const summaryBox = document.getElementById("summaryBox");
+            if (summaryBox.style.display !== 'block') {
+                alert('Please submit the form first to generate printable summary');
+                return;
+            }
+
+            // Trigger print
+            window.print();
+        }
+
+        document.getElementById("birthForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const form = e.target;
+
+            // Show summary box
+            const summaryBox = document.getElementById("summaryBox");
+            const summaryContent = document.getElementById("summaryContent");
+            summaryBox.style.display = 'block';
+
+
+            // Clear previous content
+            summaryContent.innerHTML = '';
+
+            // Create summary data
+            const summaryData = [
+                { label: "Name (English) / नाम (अंग्रेज़ी):", value: form.name_en.value },
+                { label: "नाम (हिंदी):", value: form.name_hi.value },
+                { label: "Aadhar No / आधार संख्या:", value: form.aadhaar.value },
+                { label: "Date of Birth / जन्म तिथि:", value: form.dob.value },
+                { label: "Gender / लिंग:", value: form.gender.value },
+                { label: "Father's Name (English) / पिता का नाम (अंग्रेज़ी):", value: form.father_name_en.value },
+                { label: "पिता का नाम (हिंदी):", value: form.father_name_hi.value },
+                { label: "Father's Aadhar No / पिता का आधार संख्या:", value: form.father_aadhaar.value },
+                { label: "Mother's Name (English) / माता का नाम (अंग्रेज़ी):", value: form.mother_name_en.value },
+                { label: "माता का नाम (हिंदी):", value: form.mother_name_hi.value },
+                { label: "Mother's Aadhar No / माता का आधार संख्या:", value: form.mother_aadhaar.value },
+                { label: "Mobile No / मोबाइल नंबर:", value: form.mobile.value },
+                { label: "Full Address (English) / पूरा पता (अंग्रेज़ी):", value: form.address_en.value },
+                { label: "पूरा पता (हिंदी):", value: form.address_hi.value }
+            ];
+
+            // Add summary data to the box
+            summaryData.forEach(item => {
+                const labelDiv = document.createElement("div");
+                labelDiv.className = "summary-label";
+                labelDiv.textContent = item.label;
+
+                const valueDiv = document.createElement("div");
+                valueDiv.className = "summary-value";
+                valueDiv.textContent = item.value || "Not provided";
+
+                summaryContent.appendChild(labelDiv);
+                summaryContent.appendChild(valueDiv);
+            });
+
+            // Show the summary box
+            summaryBox.style.display = 'block';
+
+            // Scroll to the summary box
+            summaryBox.scrollIntoView({ behavior: 'smooth' });
+
+            // Generate PDF
+            const doc = new jsPDF();
+            let y = 10;
+            const lineHeight = 10;
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(12);
+            doc.text("Birth Certificate Application / जन्म प्रमाण पत्र आवेदन", 10, y);
+            y += lineHeight * 2;
+
+            summaryData.forEach((item) => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 10;
+                }
+                doc.text(`${item.label} ${item.value}`, 10, y);
+                y += lineHeight;
+            });
+
+            doc.save("Birth_Certificate_Form.pdf");
+        });
+    </script>
 </body>
+
 </html>
